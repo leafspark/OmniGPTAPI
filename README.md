@@ -21,4 +21,6 @@ node app.js
 ## Notes:
 - This does not bypass usage limits
 - May get ported to C++ and JavaScript if I have time
-- No Markdown support due to terminal output
+- ~~No Markdown support due to terminal output~~Use ChatUI.java
+- No error handling or debug output
+- Close/edit buttons do not appear
