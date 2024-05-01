@@ -1,26 +1,29 @@
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.stream.Stream;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
 public class OmniAPI {
 
     private final HttpClient client;
-    private final String bearerToken;
+    static String bearerToken = "";
 
     public OmniAPI(String bearerToken) {
         this.client = HttpClient.newHttpClient();
         this.bearerToken = bearerToken;
     }
 
-    public String sendMessage(String userInput, String MODEL_STRING, String REFERER_URL, String API_URL) {
+    public String sendMessage(JSONArray conversationHistory, String MODEL_STRING, String REFERER_URL, String API_URL) {
         StringBuilder partialResponse = new StringBuilder();
 
         JSONObject messageJson = new JSONObject();
-        messageJson.put("messages", new JSONObject[]
-                {new JSONObject().put("role", "user").put("content", userInput)});
+        messageJson.put("messages", conversationHistory);
         messageJson.put("gptModel", MODEL_STRING);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -64,7 +67,6 @@ public class OmniAPI {
                     });
                 })
                 .join(); // Wait for completion of the task
-
         return partialResponse.toString();
     }
 }
